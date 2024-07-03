@@ -15,7 +15,6 @@ import AddIcon from "@mui/icons-material/Add";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUserFromCookie } from "../../util/util";
 import { getTickets } from "../../redux/slice/ticketSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CreateTicketDialog from "./CreateTicketDialog";
@@ -36,8 +35,9 @@ export default function TicketsPage() {
         status: "",
         priority: "",
     });
+    const loggedInUser = useSelector((state) => state.app.loggedInUser);
     useEffect(() => {
-        const { userId } = getUserFromCookie();
+        const { userId } = loggedInUser;
         if (!userId) {
             navigate("/account");
         } else {

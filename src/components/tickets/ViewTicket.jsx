@@ -19,7 +19,6 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { useEffect, useState } from "react";
 import { getSingleUser, getUsers } from "../../redux/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserFromCookie } from "../../util/util";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;

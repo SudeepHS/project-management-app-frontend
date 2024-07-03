@@ -1,14 +1,15 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import { useEffect } from "react";
-import { getUserFromCookie } from "./util/util";
 import { Box, Button, Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 function App() {
     const navigate = useNavigate();
     const locaction = useLocation();
-    const { userId, name } = getUserFromCookie();
+    const loggedInUser = useSelector((state) => state.app.loggedInUser);
+    const { userId, name } = loggedInUser;
 
     useEffect(() => {
         if (

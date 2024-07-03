@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjects } from "../../redux/slice/projectsSlice";
 import { useNavigate } from "react-router-dom";
-import { getUserFromCookie } from "../../util/util";
 import { Box, Breadcrumbs, Button, Grid, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CreateProjectDialog from "./CreateProjectDialog";
@@ -13,8 +12,9 @@ export default function ProjectsPage() {
     const [createDialog, setCreateDialog] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const loggedInUser = useSelector((state) => state.app.loggedInUser);
     useEffect(() => {
-        const { userId } = getUserFromCookie();
+        const { userId } = loggedInUser;
         if (!userId) {
             navigate("/account");
         } else {

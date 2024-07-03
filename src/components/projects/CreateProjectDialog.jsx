@@ -15,7 +15,6 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { useEffect, useState } from "react";
 import { getUsers } from "../../redux/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserFromCookie } from "../../util/util";
 import { createProject, getProjects } from "../../redux/slice/projectsSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
@@ -54,7 +53,8 @@ export default function CreateProjectDialog({ open, setCreateDialog }) {
                 return;
             }
         }
-        const { userId } = getUserFromCookie();
+        const loggedInUser = useSelector((state) => state.app.loggedInUser);
+        const { userId } = loggedInUser;
         const selectedUserIds = selectedUsers.map((user) => user._id);
         selectedUserIds.push(userId);
         dispatch(

@@ -18,7 +18,6 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { useEffect, useState } from "react";
 import { getUsers } from "../../redux/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserFromCookie } from "../../util/util";
 import { createProject, getProjects } from "../../redux/slice/projectsSlice";
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -46,7 +45,8 @@ export default function CreateTicketDialog({
     };
     const [ticket, setTicket] = useState(_ticket);
     function onCreateTicket() {
-        const { userId } = getUserFromCookie();
+        const loggedInUser = useSelector((state) => state.app.loggedInUser);
+        const { userId } = loggedInUser;
         setTicket({ ...ticket, createdBy: userId });
         if (!ticket.title) {
             toast.error("Please enter Title");
