@@ -1,4 +1,11 @@
-import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    InputLabel,
+    Link,
+    TextField,
+    Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "../../redux/slice/appSlice";
@@ -30,6 +37,8 @@ export default function RegisterLogin() {
                 login({ email: userData.email, password: userData.password })
             ).then((data) => {
                 if (data.payload?.user) {
+                    sessionStorage.setItem("userId", data.payload?.user.userId);
+                    sessionStorage.setItem("userName", data.payload?.user.name);
                     navigate("/projects");
                 } else {
                     toast.error("Invalid Credentials");
@@ -69,7 +78,7 @@ export default function RegisterLogin() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                background: "#F0F6FF",
+                background: "#FFF",
             }}
         >
             <ToastContainer position='bottom-center' />
@@ -80,11 +89,11 @@ export default function RegisterLogin() {
                     flexDirection: "column",
                     background: "#fff",
                     padding: "2rem",
-                    borderRadius: "4px",
+                    borderRadius: "8px",
                     boxShadow: "3",
                 }}
             >
-                <Typography
+                {/* <Typography
                     sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -95,40 +104,59 @@ export default function RegisterLogin() {
                     }}
                 >
                     Project Management Tool
-                </Typography>
+                </Typography> */}
                 <Typography
                     sx={{
                         display: "flex",
                         justifyContent: "center",
                         marginBottom: "1rem",
-                        color: "#102A43",
-                        fontSize: "1.5rem",
+                        color: "#394E6A",
+                        fontSize: "30px",
+                        fontFamily: "sans-serif",
+                        fontWeight: "700",
                     }}
                 >
                     {accountState === "login" ? "Login" : "Register"}
                 </Typography>
                 {accountState === "register" && (
-                    <TextField
-                        variant='outlined'
-                        size='small'
-                        placeholder='Name'
-                        sx={{ marginBottom: "1rem", width: "256px" }}
-                        value={userData.name}
-                        onChange={(e) =>
-                            setUserData((prev) => ({
-                                ...prev,
-                                name: e.target.value,
-                            }))
-                        }
-                    ></TextField>
+                    <>
+                        <InputLabel
+                            sx={{
+                                color: "#394E6A",
+                                fontSize: "0.875rem",
+                                padding: "4px 2px",
+                            }}
+                        >
+                            Name
+                        </InputLabel>
+                        <TextField
+                            variant='outlined'
+                            size='small'
+                            sx={{ marginBottom: "1rem", width: "280px" }}
+                            value={userData.name}
+                            onChange={(e) =>
+                                setUserData((prev) => ({
+                                    ...prev,
+                                    name: e.target.value,
+                                }))
+                            }
+                        ></TextField>
+                    </>
                 )}
-
+                <InputLabel
+                    sx={{
+                        color: "#394E6A",
+                        fontSize: "0.875rem",
+                        padding: "4px 2px",
+                    }}
+                >
+                    Email
+                </InputLabel>
                 <TextField
                     variant='outlined'
                     size='small'
                     type='email'
-                    placeholder='Email'
-                    sx={{ marginBottom: "1rem", width: "256px" }}
+                    sx={{ marginBottom: "1rem", width: "280px" }}
                     value={userData.email}
                     onChange={(e) =>
                         setUserData((prev) => ({
@@ -137,12 +165,20 @@ export default function RegisterLogin() {
                         }))
                     }
                 ></TextField>
+                <InputLabel
+                    sx={{
+                        color: "#394E6A",
+                        fontSize: "0.875rem",
+                        padding: "4px 2px",
+                    }}
+                >
+                    Password
+                </InputLabel>
                 <TextField
                     variant='outlined'
                     size='small'
-                    placeholder='Password'
                     type='password'
-                    sx={{ marginBottom: "1rem", width: "256px" }}
+                    sx={{ marginBottom: "1rem", width: "280px" }}
                     value={userData.password}
                     onChange={(e) =>
                         setUserData((prev) => ({
@@ -157,40 +193,47 @@ export default function RegisterLogin() {
                         marginBottom: "1rem",
                         textTransform: "capitalize",
                         backgroundColor: "#3B82F6",
+                        color: "#DBE1FF",
                     }}
                     onClick={handleSubmit}
                 >
                     Submit
                 </Button>
-                {accountState === "login" ? (
-                    <Typography>
-                        {`Don't have an account? `}
-                        <Link
-                            underline='none'
-                            onClick={() => {
-                                setUserData(user);
-                                setAccountState("register");
-                            }}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            Register
-                        </Link>
-                    </Typography>
-                ) : (
-                    <Typography>
-                        {`Already have an account? `}
-                        <Link
-                            underline='none'
-                            onClick={() => {
-                                setUserData(user);
-                                setAccountState("login");
-                            }}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            Login
-                        </Link>
-                    </Typography>
-                )}
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    {accountState === "login" ? (
+                        <Typography sx={{ color: "#394E6A", fontSize: "16px" }}>
+                            {`Don't have an account? `}
+                            <Link
+                                underline='none'
+                                onClick={() => {
+                                    setUserData(user);
+                                    setAccountState("register");
+                                }}
+                                sx={{ cursor: "pointer" }}
+                            >
+                                Register
+                            </Link>
+                        </Typography>
+                    ) : (
+                        <Typography sx={{ color: "#394E6A", fontSize: "16px" }}>
+                            {`Already have an account? `}
+                            <Link
+                                underline='none'
+                                onClick={() => {
+                                    setUserData(user);
+                                    setAccountState("login");
+                                }}
+                                sx={{
+                                    cursor: "pointer",
+                                    color: "#057AFF",
+                                    fontSize: "16px",
+                                }}
+                            >
+                                Login
+                            </Link>
+                        </Typography>
+                    )}
+                </Box>
             </Box>
         </Box>
     );

@@ -58,10 +58,16 @@ export default function TicketComponent(props) {
                             alignItems: "center",
                         }}
                     >
-                        {/* <Avatar sx={{ width: "24px", height: "24px" }}>
-                            {assignedToName[0]}
-                        </Avatar> */}
-                        <Typography>{assignedToName}</Typography>
+                        <Avatar
+                            sx={{
+                                width: "20px",
+                                height: "20px",
+                                marginRight: "6px",
+                            }}
+                        ></Avatar>
+                        <Typography sx={{ textTransform: "capitalize" }}>
+                            {assignedToName}
+                        </Typography>
                     </Box>
                     <Box
                         sx={{

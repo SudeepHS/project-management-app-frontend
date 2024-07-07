@@ -12,9 +12,9 @@ export default function ProjectsPage() {
     const [createDialog, setCreateDialog] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loggedInUser = useSelector((state) => state.app.loggedInUser);
+    // const loggedInUser = useSelector((state) => state.app.loggedInUser);
+    const userId = sessionStorage.getItem("userId");
     useEffect(() => {
-        const { userId } = loggedInUser;
         if (!userId) {
             navigate("/account");
         } else {
@@ -60,7 +60,56 @@ export default function ProjectsPage() {
                 </Button>
             </Box>
             <Box sx={{ margin: "1rem 2rem 1rem 1rem" }}>
-                <Grid container spacing={4}>
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr",
+                        gap: 4,
+                        "@media (min-width: 450px)": {
+                            gridTemplateColumns: "1fr 1fr",
+                        },
+                        "@media (min-width: 600px)": {
+                            gridTemplateColumns: "1fr 1fr 1fr",
+                        },
+
+                        "@media (min-width: 900px)": {
+                            gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                        },
+                        "@media (min-width: 1300px)": {
+                            gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                        },
+                    }}
+                >
+                    {projects.map((project) => (
+                        <Box
+                            key={project._id}
+                            sx={{
+                                // background: "#f0f6ff",
+                                width: "100%",
+                                padding: "8px",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                boxShadow: "3",
+                            }}
+                            onClick={() =>
+                                onClickProject(project._id, project.projectName)
+                            }
+                        >
+                            <Typography
+                                sx={{
+                                    fontWeight: "bold",
+                                    color: "#394e6a",
+                                }}
+                            >
+                                {project.projectName}
+                            </Typography>
+                            <Typography sx={{ color: "#463aa1" }}>
+                                Tickets - {project.tickets.length}
+                            </Typography>
+                        </Box>
+                    ))}
+                </Box>
+                {/* <Grid container spacing={4}>
                     {projects.map((project) => (
                         <Grid
                             key={project._id}
@@ -100,7 +149,7 @@ export default function ProjectsPage() {
                             </Box>
                         </Grid>
                     ))}
-                </Grid>
+                </Grid> */}
             </Box>
         </Box>
     );

@@ -12,7 +12,6 @@ import {
     Typography,
     createFilterOptions,
 } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { useEffect, useState } from "react";
@@ -44,8 +43,8 @@ export default function CreateTicketDialog({
         status: "New",
     };
     const [ticket, setTicket] = useState(_ticket);
+    const loggedInUser = useSelector((state) => state.app.loggedInUser);
     function onCreateTicket() {
-        const loggedInUser = useSelector((state) => state.app.loggedInUser);
         const { userId } = loggedInUser;
         setTicket({ ...ticket, createdBy: userId });
         if (!ticket.title) {
@@ -128,10 +127,9 @@ export default function CreateTicketDialog({
                         <TextField
                             {...params}
                             sx={{
-                                "& .MuiAutocomplete-root .MuiOutlinedInput-root":
-                                    {
-                                        padding: "0",
-                                    },
+                                "& .MuiOutlinedInput-root": {
+                                    padding: "2px",
+                                },
                             }}
                         ></TextField>
                     )}

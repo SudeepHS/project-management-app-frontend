@@ -1,15 +1,17 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, redirect, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import { useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "./redux/slice/appSlice";
 function App() {
     const navigate = useNavigate();
     const locaction = useLocation();
-    const loggedInUser = useSelector((state) => state.app.loggedInUser);
-    const { userId, name } = loggedInUser;
+    const name = sessionStorage.getItem("userName");
+    const userId = sessionStorage.getItem("userId");
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (
@@ -22,16 +24,12 @@ function App() {
         }
     }, []);
 
-    async function logout() {
-        document.cookie.split(";").forEach(function (c) {
-            document.cookie = c
-                .replace(/^ +/, "")
-                .replace(
-                    /=.*/,
-                    "=;expires=" + new Date().toUTCString() + ";path=/"
-                );
+    function onLogout() {
+        dispatch(logout()).then(() => {
+            sessionStorage.removeItem("userId");
+            sessionStorage.removeItem("userName");
+            navigate("/account");
         });
-        navigate("/account");
     }
 
     return (
@@ -49,17 +47,23 @@ function App() {
                         display: "flex",
                         alignItems: "center",
                         height: "2.5rem",
-                        marginRight: "4rem",
+                        marginRight: "8px",
                     }}
                 >
-                    <Typography sx={{ color: "#C7C9D1", marginRight: "1rem" }}>
+                    <Typography
+                        sx={{
+                            color: "#C7C9D1",
+                            marginRight: "1rem",
+                            textTransform: "capitalize",
+                        }}
+                    >
                         Welcome, {name}
                     </Typography>
                     <Button
                         variant='outlined'
                         size='small'
                         sx={{ textTransform: "capitalize" }}
-                        onClick={logout}
+                        onClick={onLogout}
                     >
                         Logout
                     </Button>

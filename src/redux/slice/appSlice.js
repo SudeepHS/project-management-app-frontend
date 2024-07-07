@@ -23,6 +23,19 @@ export const login = createAsyncThunk("user/login", async (data, thunkAPI) => {
         return thunkAPI.rejectWithValue(error);
     }
 });
+
+export const logout = createAsyncThunk("user/logout", async (thunkAPI) => {
+    try {
+        const response = await axios({
+            method: "get",
+            url: `${BASE_URL}/auth/logout`,
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
 export const register = createAsyncThunk(
     "user/register",
     async (data, thunkAPI) => {
@@ -63,6 +76,16 @@ const appSlice = createSlice({
                 state.loggedInUser = payload.user;
             })
             .addCase(register.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(logout.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(logout.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.loggedInUser = {};
+            })
+            .addCase(logout.rejected, (state) => {
                 state.loading = false;
             });
     },
