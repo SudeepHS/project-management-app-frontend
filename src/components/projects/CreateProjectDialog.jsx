@@ -32,6 +32,8 @@ export default function CreateProjectDialog({ open, setCreateDialog }) {
     const [userError, setUserError] = useState(false);
     const users = useSelector((state) => state.users.users);
     const loading = useSelector((state) => state.projects.loading);
+    const loggedInUser = useSelector((state) => state.app.loggedInUser);
+    const { userId } = loggedInUser;
     function onCreateProject() {
         if (!projectName || selectedUsers?.length === 0) {
             if (!projectName) {
@@ -53,8 +55,7 @@ export default function CreateProjectDialog({ open, setCreateDialog }) {
                 return;
             }
         }
-        const loggedInUser = useSelector((state) => state.app.loggedInUser);
-        const { userId } = loggedInUser;
+
         const selectedUserIds = selectedUsers.map((user) => user._id);
         selectedUserIds.push(userId);
         dispatch(
